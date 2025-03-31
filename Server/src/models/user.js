@@ -1,4 +1,6 @@
 const mongoose=require('mongoose');
+const bcrypt=require('bcryptjs')
+
 
 const userSchema=mongoose.Schema({
     firstname:{
@@ -31,6 +33,13 @@ const userSchema=mongoose.Schema({
     timestamps:true
 }
 );
+
+
+//Hash password
+userSchema.pre('save',async function(next){
+    console.log("am beeb called");
+    
+})
 
 const User=mongoose.model('User',userSchema)
 module.exports=User

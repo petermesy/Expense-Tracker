@@ -1,22 +1,21 @@
 const express=require("express")
 
 const dbConnect=require("./config/dbConnect")
-const userRoute=require("./Routes/user/usersRoute")
-
+const userRoute=require("./Routes/user/usersRoute");
+const { errorHandler,notFound } = require("./middlewares/errorMiddleware");
 const app=express();
 
-const logger=(req,res,next)=>{
-    next()
-    console.log('Am I logger');    
-}
-app.use(logger);
+
 dbConnect();
 //middlware
 app.use(express.json());
 // routes
-app.use("/",userRoute)
+app.use("/",userRoute); 
 
+// app.use(notFound)
 
+app.use(errorHandler)
+app.use(notFound)
 
 
 
