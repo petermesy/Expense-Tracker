@@ -37,9 +37,19 @@ const userSchema=mongoose.Schema({
 
 //Hash password
 userSchema.pre('save',async function(next){
-    console.log("am beeb called");
-    
+    if(this.isModified('password')){
+    next()
+}
+const salt=await bcrypt.genSalt(10);
+this.password=await bcrypt.hash(this.password,salt)
+next()
+
 })
+
+//verify password
+userSchema.methods.isPasswordMatch = async function(enteredPassword){
+    return await bcrypt.compare(enteredPassword,this.password)
+}
 
 const User=mongoose.model('User',userSchema)
 module.exports=User

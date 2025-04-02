@@ -20,6 +20,22 @@ const registerNewUser=expressAsyncHandler(async(req,res)=>{
 
 }
 )
+// Fetch all users
+const fetchUsersCtl=async(req,res)=>{
+    try {
+        const users=await User.find({});
+        res.json(users);
+    } catch (error) {
+        res.json(error)
+        
+    }
+}
 
+//Login user
+const loginuserCtrl=expressAsyncHandler(async(req,res)=>{
+    const {email,password}=req?.body
 
-module.exports={registerNewUser};
+const userFound=await User.findOne({email});
+res.json(userFound);
+})
+module.exports={registerNewUser,fetchUsersCtl,loginuserCtrl};

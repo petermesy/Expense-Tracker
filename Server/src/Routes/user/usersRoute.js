@@ -2,8 +2,12 @@ const express=require('express')
 
 const userRoute=express.Router()
 
-const {registerNewUser}=require('../../controllers/user/usersctl')
+const {registerNewUser,
+    fetchUsersCtl,
+loginuserCtrl}=require('../../controllers/user/usersctl')
 
 userRoute.post('/register',registerNewUser);
+userRoute.post('/login',loginuserCtrl);
+userRoute.get('/',fetchUsersCtl);
 
 module.exports=userRoute; 
