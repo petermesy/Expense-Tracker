@@ -1,8 +1,9 @@
 const express=require("express")
 require('dotenv').config();
 
+
 // const dbConnect=require("./config/dbConnect")
-const dbConnect=require('./config/dbOConnect')
+const dbConnect=require('./config/dbConnect')
 const userRoute=require("./Routes/user/usersRoute");
 const { errorHandler,notFound } = require("./middlewares/errorMiddleware");
 const app=express();
@@ -15,9 +16,9 @@ app.use(express.json());
 app.use("/api/users",userRoute); 
 
 // app.use(notFound)
-
-app.use(errorHandler)
 app.use(notFound)
+app.use(errorHandler)
+
 
 
 
