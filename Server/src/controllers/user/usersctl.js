@@ -1,6 +1,7 @@
 const expressAsyncHandler=require('express-async-handler');
 
-const User=require('../../models/user')
+const User=require('../../models/user');
+const generateToken = require('../../middlewares/generatetoken');
 
 
 const registerNewUser=expressAsyncHandler(async(req,res)=>{
@@ -52,15 +53,26 @@ const loginuserCtrl = expressAsyncHandler(async (req, res) => {
                     email: userFound.email,
                     firstname: userFound.firstname,
                     lastname: userFound.lastname,
+                    isAdmin:userFound.isAdmin,
+                    token:generateToken(userFound?._id),
+
                 },
             });
         } else {
             return res.status(401).json({ message: 'Invalid email or password' });
+
         }
     } catch (error) {
         console.error('Error during login:', error.message);
         res.status(500).json({ message: 'An error occurred during login' });
     }
+
+    
+
+
+
 });
+
+
 
 module.exports={registerNewUser,fetchUsersCtl,loginuserCtrl};
