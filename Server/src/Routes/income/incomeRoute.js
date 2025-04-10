@@ -7,13 +7,14 @@ const {
     updateInCtrl,
     deleteInCtrl,
 }=require("../../controllers/income/incomCtrl")
+const authMiddleware=require('../../middlewares/authMiddleware')
 
 const incomeRoute=express.Router()
 
-incomeRoute.post('/',createIncCtrl);
-incomeRoute.get('/',fetchAllIncCtrl);
-incomeRoute.get('/:id',fetchIncDetails);
-incomeRoute.put('/:id',updateInCtrl);
-incomeRoute.delete('/:id',deleteInCtrl);
+incomeRoute.post('/',authMiddleware,createIncCtrl);
+incomeRoute.get('/',authMiddleware,fetchAllIncCtrl);
+incomeRoute.get('/:id',authMiddleware,fetchIncDetails);
+incomeRoute.put('/:id',authMiddleware,updateInCtrl);
+incomeRoute.delete('/:id',authMiddleware,deleteInCtrl);
 
 module.exports=incomeRoute;

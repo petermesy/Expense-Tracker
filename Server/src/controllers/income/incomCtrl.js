@@ -22,8 +22,11 @@ const createIncCtrl=expressAsyncHandler(async (req,res)=>{
 //fetch
 const fetchAllIncCtrl=expressAsyncHandler(async (req,res)=>{
     const{title,amount,description,user}=req.body;
+    console.log(req?.user);
+    
+    const {page}=req.query;
     try {
-        const income =await Income.find();
+        const income =await Income.paginate({},{limit: 1,page:Number(page) });
              res.json(income);
     } catch (error) {
         res.json(error)
@@ -32,7 +35,7 @@ const fetchAllIncCtrl=expressAsyncHandler(async (req,res)=>{
 //fetch single income
 const fetchIncDetails=expressAsyncHandler(async (req,res)=>{
 const {id}=req?.params;
-    try {
+    try { 
         const income =await Income.findById(id);
              res.json(income);
     } catch (error) {

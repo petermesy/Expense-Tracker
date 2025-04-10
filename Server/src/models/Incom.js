@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const mongoosePaginte=require('mongoose-paginate-v2');
+const mongoosePaginate=require('mongoose-paginate-v2');
 
 const IncomeSchema=mongoose.Schema({
     title:{
@@ -33,8 +33,7 @@ const IncomeSchema=mongoose.Schema({
 
 );
 //pagination
-
-IncomeSchema.plugin(mongoosePaginte)
+IncomeSchema.plugin(mongoosePaginate);
 
 const Income=mongoose.model("Income",IncomeSchema);
 module.exports=Income;

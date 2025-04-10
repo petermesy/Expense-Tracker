@@ -21,9 +21,10 @@ const createExpCtrl=expressAsyncHandler(async (req,res)=>{
 
 //fetch
 const fetchAllExpCtrl=expressAsyncHandler(async (req,res)=>{
+    const {page}=req.query;
     const{title,amount,description,user}=req.body;
     try {
-        const expense =await Expense.find();
+        const expense =await Expense.paginate({},{limit:1,page:Number(page)});
              res.json(expense);
     } catch (error) {
         res.json(error)
