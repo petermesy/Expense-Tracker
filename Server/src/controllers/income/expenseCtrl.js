@@ -24,7 +24,9 @@ const fetchAllExpCtrl=expressAsyncHandler(async (req,res)=>{
     const {page}=req.query;
     const{title,amount,description,user}=req.body;
     try {
-        const expense =await Expense.paginate({},{limit:1,page:Number(page)});
+        const expense =await Expense.paginate(
+            {},
+            {limit:1,page:Number(page),populate:"user"});
              res.json(expense);
     } catch (error) {
         res.json(error)
