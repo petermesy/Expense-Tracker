@@ -1,6 +1,6 @@
 const express=require("express")
 require('dotenv').config();
-
+const cors=require('cors')
 
 // const dbConnect=require("./config/dbConnect")
 const dbConnect=require('./config/dbConnect')
@@ -14,6 +14,7 @@ const app=express();
 dbConnect();
 //middlware
 app.use(express.json());
+app.use(cors());
 //Users route
 app.use("/api/users",userRoute); 
 

@@ -1,7 +1,8 @@
 import React from "react";
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-
+import {useDispatch} from 'react-redux' 
+import { loginUserAction } from "../../redux/slice/users/usersSlices";
 //form validation
 const formSchema=Yup.object({
   email:Yup.string().required("Email is required"),
@@ -9,6 +10,9 @@ const formSchema=Yup.object({
 })
 
 const Login = () => {
+  //dispatch
+  const dispatch=useDispatch();
+
   // formic form
   const formik=useFormik({
     initialValues:{
@@ -17,8 +21,7 @@ const Login = () => {
     },
 
     onSubmit:values=>{
-      console.log(values);
-      
+dispatch(loginUserAction(values));      
     },
     validationSchema:formSchema
   });
@@ -58,7 +61,10 @@ const Login = () => {
                   className="form-control mb-3"
                   type="email"
                   placeholder="Email address"
-                />
+                /> 
+                <div className="text-danger mb-2">
+                  {formik.touched.email && formik.errors.email}
+                </div>
                 <input
                    value={formik.values.password}
                    onChange={formik.handleChange('password')}
@@ -67,6 +73,9 @@ const Login = () => {
                   type="password"
                   placeholder="Password"
                 />
+                  <div className="text-danger mb-2">
+                  {formik.touched.password && formik.errors.password}
+                </div>
 
                 <button
                   type="submit"
