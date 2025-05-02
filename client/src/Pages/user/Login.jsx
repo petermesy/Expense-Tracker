@@ -1,31 +1,46 @@
-import React from "react";
-import {useFormik} from 'formik'
-import * as Yup from 'yup'
-import {useDispatch} from 'react-redux' 
+import React, { useEffect } from "react";
+import { useFormik } from "formik";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../redux/slice/users/usersSlices";
-//form validation
-const formSchema=Yup.object({
-  email:Yup.string().required("Email is required"),
-  password:Yup.string().required("Password is required"),
-})
+import DisabledButton from "../../components/DisabledButton";
+
+// Form validation schema
+const formSchema = Yup.object({
+  email: Yup.string().required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
 
 const Login = () => {
-  //dispatch
-  const dispatch=useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation(); // Get the location state
+  const dispatch = useDispatch();
 
-  // formic form
-  const formik=useFormik({
-    initialValues:{
+  // Get data from Redux store
+  const user = useSelector((state) => state?.users);
+  const { userAppErr, userServerErr, userLoading, userAuth } = user;
+
+  // Formik form
+  const formik = useFormik({
+    initialValues: {
       email: "",
       password: "",
     },
-
-    onSubmit:values=>{
-dispatch(loginUserAction(values));      
+    onSubmit: (values) => {
+      dispatch(loginUserAction(values));
     },
-    validationSchema:formSchema
+    validationSchema: formSchema,
   });
-  
+
+  // Redirect after login
+  useEffect(() => {
+    if (userAuth) {
+      const from = location.state?.from?.pathname || "/"; // Redirect to the requested route or home
+      navigate(from, { replace: true });
+    }
+  }, [userAuth, navigate, location]);
+
   return (
     <section
       className="position-relative py-5 overflow-hidden vh-100"
@@ -53,36 +68,52 @@ dispatch(loginUserAction(values));
               <span className="text-muted">Sign In</span>
               <h3 className="fw-bold mb-4">Login to your account</h3>
 
+              {userAppErr || userServerErr ? (
+                <div className="alert alert-danger" role="alert">
+                  {userAppErr || userServerErr}
+                </div>
+              ) : null}
+
               <form onSubmit={formik.handleSubmit}>
                 <input
-                value={formik.values.email}
-                onChange={formik.handleChange("email")}
-                onBlur={formik.handleBlur("email")}
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange("email")}
+                  onBlur={formik.handleBlur("email")}
                   className="form-control mb-3"
                   type="email"
                   placeholder="Email address"
-                /> 
+                />
                 <div className="text-danger mb-2">
                   {formik.touched.email && formik.errors.email}
                 </div>
                 <input
-                   value={formik.values.password}
-                   onChange={formik.handleChange('password')}
-                   onBlur={formik.handleBlur("password")}
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange("password")}
+                  onBlur={formik.handleBlur("password")}
                   className="form-control mb-3"
                   type="password"
                   placeholder="Password"
                 />
-                  <div className="text-danger mb-2">
+                <div className="text-danger mb-2">
                   {formik.touched.password && formik.errors.password}
                 </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary py-2 w-100 mb-4"
-                >
-                  Login
-                </button>
+                <div>
+                  {userLoading ? (
+                    <DisabledButton />
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary py-2 w-100 mb-4"
+                    >
+                      Login
+                    </button>
+                  )}
+                </div>
+                <div>
+                  Create Account <Link to="/register">here</Link>
+                </div>
               </form>
             </div>
           </div>

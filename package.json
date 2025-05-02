@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "server": "npm run dev --prefix server",
-    "client":"npm run dev --prefix client",
-    "watch":"npm run server & npm run client"
-
-
-  },
+"scripts": {
+  "server": "npm run dev --prefix server",
+  "client": "npm run dev --prefix client",
+  "watch": "concurrently \"npm run server\" \"npm run client\""
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/petermesy/MERN-Stack-Book-Store-Project.git"
@@ -21,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/petermesy/MERN-Stack-Book-Store-Project/issues"
   },
-  "homepage": "https://github.com/petermesy/MERN-Stack-Book-Store-Project#readme"
+  "homepage": "https://github.com/petermesy/MERN-Stack-Book-Store-Project#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
