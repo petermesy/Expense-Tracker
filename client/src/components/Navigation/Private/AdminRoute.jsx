@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import PrivateNavbar from "./PrivateNavbar";
+
 
 const AdminRoute = ({ element }) => {
   const userLogin = useSelector((state) => state?.users?.userAuth);
@@ -8,10 +10,12 @@ const AdminRoute = ({ element }) => {
 console.log(userLogin);
 
   // If the user is logged in, render the component; otherwise, redirect to login
-  return userLogin ? (
-    element
+  return userLogin?.isAdmin? (
+    <div>
+    <PrivateNavbar />
+    {element}</div>
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/not-found" state={{ from: location }} replace />
   );
 };
 

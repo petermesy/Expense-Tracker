@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Home from "./Pages/Home";
 import Login from "./Pages/user/Login";
@@ -14,12 +14,24 @@ import AdminRoute from "./components/Navigation/Private/AdminRoute";
 import Dashboard from "./Pages/user/Dashboard";
 
 const App = () => {
+  const location = useLocation();
+
+  // Define routes where Navbar should not be displayed
+  const hideNavbarRoutes = ["/dashboard", "/add-income", "/add-expense", "/profile","/not-found"];
+
   return (
     <div>
-      <Navbar />
+      {/* Conditionally render Navbar */}
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/not-found" element={<NotAdmin />} />
+        
+        <Route path="/not-found" 
+        element={<ProtectedRoute element={<NotAdmin/>}/>}  
+        />
+        
+
         <Route
           path="/dashboard"
           element={<AdminRoute element={<Dashboard />} />}
@@ -44,7 +56,3 @@ const App = () => {
 };
 
 export default App;
-// git status
-// git add .
-// git commit -m "Updated App.jsx: Added ProtectedRoute and AdminRoute for dashboard and other routes"
-// git push
